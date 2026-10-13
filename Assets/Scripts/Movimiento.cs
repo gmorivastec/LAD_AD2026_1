@@ -1,10 +1,32 @@
 // namespaces
 // colecciones de código pre-hecho que podemos utilizar 
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Movimiento : MonoBehaviour
 {
+
+    // EVENTOS DE UNITY 
+    // mecanismo por medio del cual podemos "avisar" que algo sucedió
+    // a otras entidades que estén suscritas
+
+    // objetivo: evitar que nuestras clases estén fuertemente ligadas
+
+    // cómo declarar un evento sin argumentos
+    [SerializeField]
+    private UnityEvent _eventoSinArgs;
+
+    // cómo declarar un evento con argumentos
+    // paso 1 - declarar una clase con los argumentos que necesitamos
+    [System.Serializable]
+    public class HuboDisparoEvent : UnityEvent<float, float> {}
+
+    // paso 2 - declarar una variable de la clase que acabo de declarar
+    [SerializeField]
+    private HuboDisparoEvent _huboDisparo;
+
 
     // paso 1 de input
     // crear un objeto de la clase que se generó
@@ -89,6 +111,13 @@ public class Movimiento : MonoBehaviour
                 transform.position, 
                 transform.rotation
             );
+
+            // LO NUEVO CON EVENTOS:
+            // detonar eventos 
+            // "avisar"
+
+            _eventoSinArgs.Invoke();
+            _huboDisparo.Invoke(transform.position.x, transform.position.y);
         }
     }
 }
